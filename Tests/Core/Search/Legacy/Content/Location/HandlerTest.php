@@ -1,27 +1,27 @@
 <?php
 
-namespace Netgen\TagsBundle\Core\Persistence\Legacy\Tests\Content;
+namespace Netgen\TagsBundle\Core\Search\Legacy\Tests\Content\Location;
 
-use eZ\Publish\Core\Persistence\Legacy\Content\Search;
-use eZ\Publish\Core\Persistence\Legacy\Content\Search\Common\Gateway\CriteriaConverter;
-use eZ\Publish\Core\Persistence\Legacy\Content\Search\Common\Gateway\SortClauseConverter;
+use eZ\Publish\Core\Search\Legacy\Content;
+use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriteriaConverter;
+use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\SortClauseConverter;
 use eZ\Publish\SPI\Persistence\Content\Location as SPILocation;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use eZ\Publish\Core\Persistence\Legacy\Tests\Content\LanguageAwareTestCase;
-use eZ\Publish\Core\Persistence\Legacy\Content\Search\Common\Gateway\CriterionHandler as CommonCriterionHandler;
-use eZ\Publish\Core\Persistence\Legacy\Content\Search\Location\Gateway\SortClauseHandler as LocationSortClauseHandler;
-use eZ\Publish\Core\Persistence\Legacy\Content\Search\Common\Gateway\SortClauseHandler as CommonSortClauseHandler;
+use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler as CommonCriterionHandler;
+use eZ\Publish\Core\Search\Legacy\Content\Location\Gateway\SortClauseHandler as LocationSortClauseHandler;
+use eZ\Publish\Core\Search\Legacy\Content\Common\Gateway\SortClauseHandler as CommonSortClauseHandler;
 
 use Netgen\TagsBundle\API\Repository\Values\Content\Query\Criterion;
-use Netgen\TagsBundle\Core\Persistence\Legacy\Content\Search\Common\Gateway\CriterionHandler\TagId as TagIdCriterionHandler;
-use Netgen\TagsBundle\Core\Persistence\Legacy\Content\Search\Common\Gateway\CriterionHandler\TagKeyword as TagKeywordCriterionHandler;
+use Netgen\TagsBundle\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler\TagId as TagIdCriterionHandler;
+use Netgen\TagsBundle\Core\Search\Legacy\Content\Common\Gateway\CriterionHandler\TagKeyword as TagKeywordCriterionHandler;
 
 /**
- * Test case for LocationSearchHandler with Tags criteria
+ * Test case for legacy location search handler with Tags criteria
  */
-class LocationSearchHandlerTest extends LanguageAwareTestCase
+class HandlerTest extends LanguageAwareTestCase
 {
     protected static $setUp = false;
 
@@ -39,12 +39,12 @@ class LocationSearchHandlerTest extends LanguageAwareTestCase
         if ( !self::$setUp )
         {
             parent::setUp();
-            $this->insertDatabaseFixture( __DIR__ . '/../../../../../vendor/ezsystems/ezpublish-kernel/eZ/Publish/Core/Persistence/Legacy/Tests/Content/SearchHandler/_fixtures/full_dump.php' );
+            $this->insertDatabaseFixture( __DIR__ . '/../../../../../../vendor/ezsystems/ezpublish-kernel/eZ/Publish/Core/Search/Legacy/Tests/_fixtures/full_dump.php' );
             self::$setUp = $this->handler;
 
             $handler = $this->getDatabaseHandler();
 
-            $schema = __DIR__ . "/../../../../_fixtures/schema/schema." . $this->db . ".sql";
+            $schema = __DIR__ . "/../../../../../_fixtures/schema/schema." . $this->db . ".sql";
 
             $queries = array_filter( preg_split( "(;\\s*$)m", file_get_contents( $schema ) ) );
             foreach ( $queries as $query )
@@ -52,7 +52,7 @@ class LocationSearchHandlerTest extends LanguageAwareTestCase
                 $handler->exec( $query );
             }
 
-            $this->insertDatabaseFixture( __DIR__ . "/../../../../_fixtures/tags_tree.php" );
+            $this->insertDatabaseFixture( __DIR__ . "/../../../../../_fixtures/tags_tree.php" );
         }
         else
         {
@@ -87,12 +87,12 @@ class LocationSearchHandlerTest extends LanguageAwareTestCase
      * This method returns a fully functional search handler to perform tests
      * on.
      *
-     * @return \eZ\Publish\Core\Persistence\Legacy\Content\Search\Location\Handler
+     * @return \eZ\Publish\Core\Search\Legacy\Content\Location\Handler
      */
     protected function getLocationSearchHandler()
     {
-        return new Search\Location\Handler(
-            new Search\Location\Gateway\DoctrineDatabase(
+        return new Content\Location\Handler(
+            new Content\Location\Gateway\DoctrineDatabase(
                 $this->getDatabaseHandler(),
                 new CriteriaConverter(
                     array(
