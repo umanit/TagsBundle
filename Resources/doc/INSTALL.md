@@ -13,6 +13,8 @@ Netgen Tags Bundle 1.0 can only be used with eZ Publish Enterprise 5.2 or eZ Pub
 
 Netgen Tags Bundle 1.1 can only be used with eZ Publish Enterprise 5.3 or later or eZ Publish Community Project 2014.05 or later.
 
+Netgen Tags Bundle 2.1 can only be used with eZ Platform. Last version available for eZ Publish Community and eZ Publish Enterprise is 2.0.x
+
 Installation steps
 ------------------
 
@@ -22,7 +24,7 @@ Add the following to your composer.json and run `php composer.phar update netgen
 
 ```json
 "require": {
-    "netgen/tagsbundle": "~2.0"
+    "netgen/tagsbundle": "~2.0.0"
 }
 ```
 
